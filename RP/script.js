@@ -17,34 +17,52 @@ const goldText = document.querySelector('#goldText');
 const monsterStats = document.querySelector('#monsterStats');
 const monsterName = document.querySelector('#monsterName');
 const monsterHealthText = document.querySelector('#monsterHealth');
+const monsterImage = document.querySelector('#monsterImage');
+const monsterXp = document.querySelector('#monsterXp');
+const storeImage = document.querySelector('#storeImage');
 
 const weapons = [
     {name: 'Old Sword', power: 10},
     {name: 'Dagger', power: 20},
     {name: 'Bow', power: 30},
     {name: 'Long Sword', power: 40},
-    {name: 'Sphere', power: 50},
+    {name: 'Spear', power: 50},
     {name: 'Axe', power: 60},
-    {name: 'stick', power: 2000},
+    {name: 'Pole-Axe', power: 200},
     {name: 'Hero Sword', power: 1000},
+    {name: 'Stick', power: 99999}
 ];
 
+//Have to have higher health boss on the bottome
 const monsters = [
     {
         name: "Slime",
-        level: 3,
-        health: 15
+        level: 5,
+        health: 15,
+        image: "images/slime.png"
     },
+
     {
-        name: "Fanged Beast",
+        name: "Gemrazer",
         level: 10,
-        health: 70
+        health: 70,
+        image: "images/gemrazer.webp"
     },
+
     {
         name: "Dragon",
         level: 300,
-        health: 20000
-    }
+        health: 2000,
+        image: "images/dragon.png"
+    },
+
+    {
+        name: "Primordial Hydra", //More powerful then the Dragon
+        level: 320,
+        health: 2200,
+        image: "images/primordia-hydra.png"
+    },
+
 ];
 
 const locations = [
@@ -62,8 +80,8 @@ const locations = [
     },
     {
         name: "Cave",
-        "button text": ["Fight Slime", "Fight Fanged Beast", "Go to town square"],
-        "button functions": [fightSlime, fightBeast, goTown],
+        "button text": ["Fight Slime", "Fight Gemrazer", "Fight Primordial Hydra", "Go to town square"],
+        "button functions": [fightSlime, fightBeast, fightprimordial ,goTown],
         text: "You enter the cave. You see some monsters."
     },
     {
@@ -74,34 +92,34 @@ const locations = [
     },
     {
         name: "Kill Monster",
-        "button text": ["Go to town square", "Go to town square", "Go to town square"],
-        "button functions": [goTown, goTown, easterEgg],
+        "button text": ["Go to town square", "Go to Shop", "Hidden door"],
+        "button functions": [goTown, goStore, easterEgg],
         text: 'The monster screams "Arg" as it dies. You gain experience points and find gold.'
     },
     {
         name: "Lose",
-        "button text": ["REPLAY?", "REPLAY?", "REPLAY?"],
-        "button functions": [restart, restart, restart],
-        text: "You die. Hero;"
+        "button text": ["REPLAY?"],
+        "button functions": [restart],
+        text: "You die. Hero the prince was take for ever and the kingdom hasents seen the pricen ever since."
     },
     {
         name: "Win",
-        "button text": ["REPLAY?", "REPLAY?", "REPLAY?"],
-        "button functions": [restart, restart, restart],
-        text: "You defeat the dragon and saved the prince. You win the game, Hero!"
+        "button text": ["REPLAY?"],
+        "button functions": [restart],
+        text: "You defeat the dragon and saved the prince. You win the game, Hero but now you are stuck in this world and can not make it back to your world"
     },
     {
         name: "Easter Egg",
         "button text": ["Heads", "Tales", "Go to town square"],
         "button functions": [pickTwo, pickEight, goTown],
-        text: "You find a secret game. Pick a number above. Ten numbers will be randomly chosen between 0 and 10. If the number you choose matches one of the random numbers, you win!"
+        text: "You find a secret game. Pick Heads or Tales. Theres a floting conin in the air as you walked up to it you see that it said 'Pick heads or tales if you guess right you win Hero'"
     }
 ];
 
 // Button event listeners
 button1.onclick = goStore;
 button2.onclick = goCave;
-button3.onclick = fightDragon;
+button3.onclick = fightprimordial;
 button4.onclick = viewInventory;
 
 function update(location) {
@@ -121,6 +139,7 @@ function goTown() {
 
 function goStore() {
     update(locations[1]);
+    storeImage.src = "store.png";
 }
 
 function goCave() {
@@ -180,6 +199,11 @@ function fightBeast() {
     goFight();
 }
 
+function fightprimordial() {
+    fighting = 3;
+    goFight();
+}
+
 function fightDragon() {
     fighting = 2;
     goFight();
@@ -191,6 +215,10 @@ function goFight() {
     monsterStats.style.display = "block";
     monsterName.innerText = monsters[fighting].name;
     monsterHealthText.innerText = monsterHealth;
+    monsterImage.src = monsters[fighting].image;
+
+    const monsterLevel = monsters[fighting].level;
+    monsterXp.innerText = monsterLevel
 }
 
 function attack() {
