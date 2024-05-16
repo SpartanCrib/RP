@@ -14,11 +14,11 @@ body {
 }
 
 #game {
-  max-width: 500px;
+  max-width: 600px;
   max-height: 400px;
   background-color: #ffffff;
   color: #ffffff;
-  margin: 30px auto 0px;
+  margin: 119px auto 0px;
   padding: 10px;
 }
 
@@ -36,6 +36,14 @@ body {
   color: #ffffff;
   background-color: #c70d0d;
 }
+
+#monsterImage {
+  display: block;
+  margin: 20px auto;
+  max-width: 100%;
+  height: auto;
+}
+
 
 .stat {
   padding-right: 10px;
