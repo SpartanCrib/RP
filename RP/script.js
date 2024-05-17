@@ -33,7 +33,6 @@ const weapons = [
     {name: 'Stick', power: 99999}
 ];
 
-//Have to have higher health boss on the bottome
 const monsters = [
     {
         name: "Slime",
@@ -41,85 +40,88 @@ const monsters = [
         health: 15,
         image: "images/slime.png"
     },
-
+    {
+        name: "Mirelurker",
+        level: 10,
+        health: 50,
+        image: "images/swamp-2.png"
+    },
+    
     {
         name: "Gemrazer",
-        level: 10,
+        level: 30,
         health: 70,
         image: "images/gemrazer.webp"
     },
-
     {
         name: "Dragon",
         level: 300,
         health: 2000,
         image: "images/dragon.png"
     },
-
     {
-        name: "Primordial Hydra", //More powerful then the Dragon
+        name: "Primordial Hydra",
         level: 320,
         health: 2200,
         image: "images/primordia-hydra.png"
     },
-
 ];
 
 const locations = [
     {
         name: "Town Square",
-        "button text": ["Go to store", "Go to cave", "Fight Dragon"],
-        "button functions": [goStore, goCave, fightDragon],
-        text: "You are in town square. You see a sign that says \"Store\"."
+        "button text": ["Go to store", "Go to cave", "Fight Dragon", "View Inventory"],
+        "button functions": [goStore, goCave, fightDragon, viewInventory],
+        text: "You are in the town square. You see a sign that says 'Store'."
     },
     {
         name: "Store",
-        "button text": ["Buy 20 health (10 gold)", "Buy weapon (30 gold)", "Go to town square"],
-        "button functions": [buyHealth, buyWeapon, goTown],
+        "button text": ["Buy 20 health (10 gold)", "Buy weapon (30 gold)", "Go to town square", "View Inventory"],
+        "button functions": [buyHealth, buyWeapon, goTown, viewInventory],
         text: "You enter the store."
     },
     {
         name: "Cave",
-        "button text": ["Fight Slime", "Fight Gemrazer", "Fight Primordial Hydra", "Go to town square"],
-        "button functions": [fightSlime, fightBeast, fightprimordial ,goTown],
+        "button text": ["Fight Slime", "Fight Swamp Monster", "Fight Gemrazer", "Fight Primordial Hydra", "View Inventory"],
+        "button functions": [fightSlime, fightSwamp, fightBeast, fightPrimordial, viewInventory],
         text: "You enter the cave. You see some monsters."
     },
     {
         name: "Fight",
-        "button text": ["Attack", "Dodge", "Run"],
-        "button functions": [attack, dodge, goTown],
+        "button text": ["Attack", "Dodge", "Run", "View Inventory"],
+        "button functions": [attack, dodge, goTown, viewInventory],
         text: "You are fighting a monster."
     },
     {
         name: "Kill Monster",
-        "button text": ["Go to town square", "Go to Shop", "Hidden door"],
-        "button functions": [goTown, goStore, easterEgg],
+        "button text": ["Go to town square", "Go to store", "Hidden door", "View Inventory"],
+        "button functions": [goTown, goStore, easterEgg, viewInventory],
         text: 'The monster screams "Arg" as it dies. You gain experience points and find gold.'
     },
     {
         name: "Lose",
-        "button text": ["REPLAY?"],
-        "button functions": [restart],
-        text: "You die. Hero the prince was take for ever and the kingdom hasents seen the pricen ever since."
+        "button text": ["REPLAY?", "", "", "View Inventory"],
+        "button functions": [restart, null, null, viewInventory],
+        text: "You die. The prince was taken forever and the kingdom hasn't seen the prince ever since."
     },
     {
         name: "Win",
-        "button text": ["REPLAY?"],
-        "button functions": [restart],
-        text: "You defeat the dragon and saved the prince. You win the game, Hero but now you are stuck in this world and can not make it back to your world"
+        "button text": ["REPLAY?", "", "", "View Inventory"],
+        "button functions": [restart, null, null, viewInventory],
+        text: "You defeat the dragon and save the prince. You win the game, Hero, but now you are stuck in this world and cannot make it back to your world."
     },
     {
         name: "Easter Egg",
-        "button text": ["Heads", "Tales", "Go to town square"],
-        "button functions": [pickTwo, pickEight, goTown],
-        text: "You find a secret game. Pick Heads or Tales. Theres a floting conin in the air as you walked up to it you see that it said 'Pick heads or tales if you guess right you win Hero'"
+        "button text": ["Heads", "Tales", "Go to town square", "View Inventory"],
+        "button functions": [pickTwo, pickEight, goTown, viewInventory],
+        text: "You find a secret game. Pick Heads or Tails. There's a floating coin in the air. As you walked up to it, you see that it said 'Pick heads or tails if you guess right you win Hero'."
     }
 ];
 
 // Button event listeners
 button1.onclick = goStore;
 button2.onclick = goCave;
-button3.onclick = fightprimordial;
+button3.onclick = fightDragon;
 button4.onclick = viewInventory;
 
 function update(location) {
@@ -127,9 +129,18 @@ function update(location) {
     button1.innerText = location["button text"][0];
     button2.innerText = location["button text"][1];
     button3.innerText = location["button text"][2];
+    if (location["button text"][3]) {
+        button4.style.display = "inline-block";
+        button4.innerText = location["button text"][3];
+    } else {
+        button4.style.display = "none";
+    }
     button1.onclick = location["button functions"][0];
     button2.onclick = location["button functions"][1];
     button3.onclick = location["button functions"][2];
+    if (location["button functions"][3]) {
+        button4.onclick = location["button functions"][3];
+    }
     text.innerText = location.text;
 }
 
@@ -139,7 +150,7 @@ function goTown() {
 
 function goStore() {
     update(locations[1]);
-    storeImage.src = "store.png";
+    storeImage.src = "images/store.png";
 }
 
 function goCave() {
@@ -194,18 +205,23 @@ function fightSlime() {
     goFight();
 }
 
-function fightBeast() {
+function fightSwamp() {
     fighting = 1;
     goFight();
 }
 
-function fightprimordial() {
-    fighting = 3;
+function fightBeast() {
+    fighting = 2;
+    goFight();
+}
+
+function fightPrimordial() {
+    fighting = 4;
     goFight();
 }
 
 function fightDragon() {
-    fighting = 2;
+    fighting = 3;
     goFight();
 }
 
@@ -218,7 +234,7 @@ function goFight() {
     monsterImage.src = monsters[fighting].image;
 
     const monsterLevel = monsters[fighting].level;
-    monsterXp.innerText = monsterLevel
+    monsterXp.innerText = monsterLevel;
 }
 
 function attack() {
@@ -235,13 +251,13 @@ function attack() {
     if (health <= 0) {
         lose();
     } else if (monsterHealth <= 0) {
-        if (fighting === 2) {
+        if (fighting === 3) {
             winGame();
         } else {
             defeatMonster();
         }
     }
-    if (Math.random() <= 0.1 && inventory.length !== 1) {
+    if (Math.random() <= 0.1 && inventory.length > 1) {
         text.innerText += " Your " + inventory.pop() + " breaks.";
         currentWeapon--;
     }
